@@ -1,4 +1,4 @@
-var fiber_jQuery = $.noConflict(true);
+var fiber_jQuery = $;
 
 // fiber namespace
 var Fiber = {};

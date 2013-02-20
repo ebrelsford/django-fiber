@@ -12,6 +12,10 @@ from .models import ContentItem, Page
 from .utils.import_util import import_element
 
 
+def is_html_response(response):
+    return response.get('Content-Type', '').split(';')[0] in ('text/html', 'application/xhtml+xml')
+
+
 class AdminPageMiddleware(object):
     body_re = re.compile(
         r"<head>(?P<IN_HEAD>.*)</head>(?P<AFTER_HEAD>.*)<body(?P<IN_BODY_TAG>.*?)>(?P<BODY_CONTENTS>.*)</body>",
@@ -23,7 +27,7 @@ class AdminPageMiddleware(object):
 
     def process_response(self, request, response):
         # only process html and xhtml responses
-        if response['Content-Type'].split(';')[0] not in ('text/html', 'application/xhtml+xml'):
+        if not is_html_response(response):
             return response
         if self.set_login_session(request, response):
             request.session['show_fiber_admin'] = True
@@ -91,7 +95,7 @@ class AdminPageMiddleware(object):
         Only set the fiber show_login session when the request
         - has LOGIN_STRING (defaults to @fiber) behind its request-url
         """
-        if response['Content-Type'].split(';')[0] not in ('text/html', 'application/xhtml+xml'):
+        if not is_html_response(response):
             return False
         if not (request.path_info.endswith(LOGIN_STRING) or (request.META['QUERY_STRING'] and request.META['QUERY_STRING'].endswith(LOGIN_STRING))):
             return False
@@ -105,7 +109,7 @@ class AdminPageMiddleware(object):
         - has session key show_fiber_admin = True
         - has a response which is either 'text/html' or 'application/xhtml+xml'
         """
-        if response['Content-Type'].split(';')[0] not in ('text/html', 'application/xhtml+xml'):
+        if not is_html_response(response):
             return False
         try:
             if request.user.is_staff:
@@ -137,7 +141,7 @@ class AdminPageMiddleware(object):
             return False
         if not request.user.is_staff:
             return False
-        if response['Content-Type'].split(';')[0] not in ('text/html', 'application/xhtml+xml'):
+        if not is_html_response(response):
             return False
         if request.is_ajax():
             return False
@@ -178,7 +182,7 @@ class ObfuscateEmailAddressMiddleware(object):
     def process_response(self, request, response):
         # http://www.lampdocs.com/blog/2008/10/regular-expression-to-extract-all-e-mail-addresses-from-a-file-with-php/
         email_pattern = re.compile(r'(mailto:)?[_a-zA-Z0-9-]+(\.[_a-zA-Z0-9-]+)*@[a-zA-Z0-9-]+(\.[a-zA-Z0-9-]+)*\.(([0-9]{1,3})|([a-zA-Z]{2,3})|(aero|coop|info|museum|name))')
-        if response['Content-Type'].split(';')[0] in ('text/html', 'application/xhtml+xml'):
+        if is_html_response(response):
             response.content = email_pattern.sub(self.encode_string_repl, response.content)
         return response
 

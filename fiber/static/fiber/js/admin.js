@@ -1113,7 +1113,7 @@ var AddButton = Class.extend({ // TODO: subclass to AddPageButton / AddContentIt
 			new AddContentItemFormDialog(params);
 		}
 
-		adminPage.hide_admin_elements();
+		Fiber.adminPage.hide_admin_elements();
 		return false;
 	},
 
@@ -1318,7 +1318,7 @@ var AddContentItemFormDialog = ChangeContentItemFormDialog.extend({
 });
 
 
-var adminPage = {
+var Fiber.adminPage = {
 	all_fiber_items: [],
 
 	create_fiber_item: function($fiber_element) {
@@ -1511,10 +1511,10 @@ var adminPage = {
 					helper: 'clone'
 				});
 				$node.bind('dragstart', function() {
-					adminPage.show_droppables();
+					Fiber.adminPage.show_droppables();
 				});
 				$node.bind('dragstop', function() {
-					adminPage.hide_droppables();
+					Fiber.adminPage.hide_droppables();
 				});
 
 				// add fiber-data
@@ -1996,10 +1996,10 @@ Fiber.FiberItem = Class.extend({
 				revert: 'invalid',
 				zIndex: 1001,
 				start: function() {
-					adminPage.show_droppables();
+					Fiber.adminPage.show_droppables();
 				},
 				stop: function() {
-					adminPage.hide_droppables();
+					Fiber.adminPage.hide_droppables();
 				}
 			});
 		}
@@ -2229,7 +2229,7 @@ Fiber.FiberItem = Class.extend({
 	// TODO: move to page specific class (remove / delete)
 	remove_from_page: function() {
 		busyIndicator.show();
-		adminPage.hide_admin_elements();
+		Fiber.adminPage.hide_admin_elements();
 
 		$.ajax({
 			url: '/api/v2/page_content_items/' + this.element_data.page_content_item_id + '/',
@@ -2243,7 +2243,7 @@ Fiber.FiberItem = Class.extend({
 
 	// TODO: move to page specific class (edit)
 	edit_page: function() {
-		adminPage.hide_admin_elements();
+		Fiber.adminPage.hide_admin_elements();
 
 		var changePageFormDialog = new ChangePageFormDialog({
 			url: this.element_data.url,
@@ -2254,7 +2254,7 @@ Fiber.FiberItem = Class.extend({
 	// TODO: move to content item specific class (edit)
 	edit_content_item: function() {
 		if (this.element_data.url) {
-			adminPage.hide_admin_elements();
+			Fiber.adminPage.hide_admin_elements();
 
 			new ChangeContentItemFormDialog({
 				url: this.element_data.url
@@ -2266,7 +2266,7 @@ Fiber.FiberItem = Class.extend({
 
 $(window).ready(function() {
 	var body_fiber_data = $.parseJSON($('body').dataset('fiber-data'));
-	adminPage.init(body_fiber_data);
+	Fiber.adminPage.init(body_fiber_data);
 
 	if (body_fiber_data.show_login) {
 		$('body').addClass('df-admin');

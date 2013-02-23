@@ -1318,7 +1318,7 @@ var AddContentItemFormDialog = ChangeContentItemFormDialog.extend({
 });
 
 
-var Fiber.adminPage = {
+Fiber.adminPage = {
 	all_fiber_items: [],
 
 	create_fiber_item: function($fiber_element) {

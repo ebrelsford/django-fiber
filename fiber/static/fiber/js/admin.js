@@ -723,7 +723,7 @@ var BaseFileSelectDialog = AdminRESTDialog.extend({
 
 		this.select_grid.bind('datagrid.select', function(e) {
 			if (e.row.can_edit){
-				delete_button.attr('disabled', '');
+				delete_button.removeAttr('disabled');
 				delete_button.removeClass('ui-button-disabled ui-state-disabled');
 			}
 			else if (!delete_button.hasClass('ui-button-disabled ui-state-disabled')){
@@ -813,7 +813,7 @@ Fiber.ImageSelectDialog = BaseFileSelectDialog.extend({
 		});
 
 		this.select_grid.bind('datagrid.select', function() {
-			action_button.attr('disabled', '');
+			action_button.removeAttr('disabled');
 			action_button.removeClass('ui-button-disabled ui-state-disabled');
 		});
 
@@ -893,7 +893,7 @@ Fiber.FileSelectDialog = BaseFileSelectDialog.extend({
 			sortorder: 'desc'
 		});
 		this.select_grid.bind('datagrid.select', function() {
-			action_button.attr('disabled', '');
+			action_button.removeAttr('disabled');
 			action_button.removeClass('ui-button-disabled ui-state-disabled');
 		});
 
@@ -970,7 +970,7 @@ Fiber.PageSelectDialog = AdminRESTDialog.extend({
 			else {
 				this.selected_url = e.node.url;
 
-				action_button.attr('disabled', '');
+				action_button.removeAttr('disabled');
 				action_button.removeClass('ui-button-disabled ui-state-disabled');
 
 				return true;
